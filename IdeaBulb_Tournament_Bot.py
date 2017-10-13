@@ -30,4 +30,4 @@ async def on_member_join(member):
     await client.send_message(discord.utils.get(member.server.channels, name='station'), 'Welcome to the *IdeaBulb Tournament Server*! ' + member.mention + '\n\nRead the ' + discord.utils.get(member.server.channels, name='rules').mention + ' and ' + discord.utils.get(member.server.channels, name='information').mention + ' channels. Once you have done so, type (or copy) `' + check + '` \n\nIn doing so you will be verified and will be able to proceed to the main area of the server.')        
 
 
-client.run('MzYzMTUwMTY4MzkwMTA3MTQ3.DLxeHw.U9u3T3ZxyfXCzbpOpC-7bwOIntw')
+client.run('IdeaBulb Tournament Bot Token')
