@@ -16,12 +16,14 @@ check = 'I agree to the IdeaBulb terms and conditions and will adhere to the rul
 @client.event
 async def on_message(message):
     if message.content == prefix + 'help':
-        em = discord.Embed(title='IdeaBulb Tourney Bot Help', description = prefix + 'help: Shows this screen.' + '\n', colour=0xFFFFFF)
+        help = prefix + 'help: Shows this screen.' + '\n' + prefix + 'request_conference: Requests a conference with the staff.'
+        em = discord.Embed(title='IdeaBulb Tourney Bot Help', description = help, colour=0xFFFFFF)
         await client.send_message(message.channel, embed=em)
     elif message.content == check:
         await client.add_roles(message.author, discord.utils.get(message.server.roles, name='Verified'))
     elif message.content == prefix + 'request_conference':
         await client.add_roles(message.author, discord.utils.get(message.server.roles, name='Conference Request'))
+        # Notify the staff that a conference has been requested.
     elif message.content.startswith(prefix):
         await client.send_message(message.channel, 'That is not a command. See `-/help` for more information.')
         
