@@ -16,14 +16,23 @@ check = 'I agree to the IdeaBulb terms and conditions and will adhere to the rul
 @client.event
 async def on_message(message):
     if message.content == prefix + 'help':
-        help = prefix + 'help: Shows this screen.' + '\n' + prefix + 'request_conference: Requests a conference with the staff.'
-        em = discord.Embed(title='IdeaBulb Tourney Bot Help', description = help, colour=0xFFFFFF)
-        await client.send_message(message.channel, embed=em)
+        help = prefix + 'help: Shows this screen.' + '\n' + prefix + 'request_conference: Requests a conference with the staff.' + '\n' + prefix + 'request_game [GAME] [DESCRIPTION] [PROPOSED_ROLE_COLOR] [LINK]: Requests a game to be appended to the server list. (Link is optional but the proposed role color should be in hexadecimal like 0xFFFFFF.)'
+        help_embed = discord.Embed(title='IdeaBulb Tourney Bot Help', description=help, colour=0xFFFFFF)
+        await client.send_message(message.channel, embed=help_embed)
     elif message.content == check:
         await client.add_roles(message.author, discord.utils.get(message.server.roles, name='Verified'))
     elif message.content == prefix + 'request_conference':
         await client.add_roles(message.author, discord.utils.get(message.server.roles, name='Conference Request'))
         # Notify the staff that a conference has been requested.
+    elif message.content.startswith(prefix + 'request_game'):
+        game_param = message.content.split(' ')
+        game_request_embed = discord.Embed(title=game_param[1]+' requested by '+message.author.name, description='Description: '+game_param[2]+'\n'+'Link: '+game_param[4], colour=int(game_param[3], 16))
+        await client.send_message(discord.utils.get(message.server.channels, name='conference'), discord.utils.get(message.server.roles, name='Staff').mention + ' A new game addition has been requested for this server:')
+        game_request_to_staff = await client.send_message(discord.utils.get(message.server.channels, name='conference'), embed=game_request_embed)
+        await client.add_reaction(game_request_to_staff, '\U0001F44D')
+        await client.add_reaction(game_request_to_staff, '\U0001F44E')
+        await client.send_message(discord.utils.get(message.server.channels, name='conference'), 'Vote in support or in opposition to the new addition. (:thumbsup: = support and :thumbsdown: = oppose)')
+        await client.send_message(message.channel, 'Your game has been requested. The staff will vote in support or in opposition to the game. If there is a majority support among staff, the vote will be passed on to the server members and a majority support among the members will allow the game to be integrated into this server.')
     elif message.content.startswith(prefix):
         await client.send_message(message.channel, 'That is not a command. See `-/help` for more information.')
         
